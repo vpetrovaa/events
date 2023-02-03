@@ -8,8 +8,8 @@ create table users
 	role varchar(45) not null,
 	email varchar(45) not null unique,
 	password varchar(60) not null,
-	firstName varchar(45) not null,
-	lastName varchar(45) not null,
+	first_name varchar(45) not null,
+	last_name varchar(45) not null,
 	primary key (id)
 );
 
