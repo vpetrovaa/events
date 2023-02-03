@@ -1,0 +1,12 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: ${SPRING_DATASOURCE_URL_LOCALHOST}
+    username: ${SPRING.DATASOURCE.USERNAME}
+    password: ${SPRING.DATASOURCE.PASSWORD}
+  jackson:
+    default-property-inclusion: non_null
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: events_schema
