@@ -24,7 +24,7 @@ public class User {
     @Column(name = "last_name")
     private String surname;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Ticket> tickets;
 
     public enum Role {

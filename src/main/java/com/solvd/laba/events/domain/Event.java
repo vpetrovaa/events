@@ -38,7 +38,7 @@ public class Event {
 
     private Status status;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private Set<Ticket> tickets;
 
     public enum Status {
