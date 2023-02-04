@@ -24,7 +24,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         var sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.solvd.laba.domain");
+        sessionFactory.setPackagesToScan("com.solvd.laba.events.domain");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
