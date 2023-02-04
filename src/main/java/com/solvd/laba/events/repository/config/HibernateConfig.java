@@ -20,7 +20,7 @@ public class HibernateConfig {
 
     private final HibernateProperties hibernateProperties;
 
-    @Bean
+    @Bean(name="entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory() {
         var sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
