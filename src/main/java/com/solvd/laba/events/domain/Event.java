@@ -1,6 +1,7 @@
 package com.solvd.laba.events.domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.awt.*;
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "events")
+@Data
 public class Event {
 
     @Id

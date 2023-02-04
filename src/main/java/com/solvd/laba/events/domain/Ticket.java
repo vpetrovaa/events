@@ -1,9 +1,11 @@
 package com.solvd.laba.events.domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "tickets")
+@Data
 public class Ticket {
 
     @Id
