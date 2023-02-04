@@ -5,6 +5,7 @@ spring:
     url: ${SPRING_DATASOURCE_URL_LOCALHOST}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+    driver: ${POSTGRES_DRIVER}
   jackson:
     default-property-inclusion: non_null
   liquibase:
