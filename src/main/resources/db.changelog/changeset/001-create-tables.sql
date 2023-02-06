@@ -22,6 +22,7 @@ create table events(
 	type varchar(45),
 	topic varchar(45),
 	country varchar(45),
+	city varchar(45),
 	coordinates point,
 	status varchar(45),
 	primary key (id)
