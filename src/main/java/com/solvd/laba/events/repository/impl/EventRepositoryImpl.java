@@ -43,11 +43,12 @@ public class EventRepositoryImpl implements EventRepository {
 
     @Override
     public Optional<Event> findById(Long id) {
-        Session session = sessionFactory.openSession();
-        Query<Event> query = session.createQuery("From Event where id=:id", Event.class);
-        query.setParameter("id", id);
-        Event event = query.uniqueResult();
-        return Optional.of(event);
+        try(Session session = sessionFactory.openSession()) {
+            Query<Event> query = session.createQuery("From Event where id=:id", Event.class);
+            query.setParameter("id", id);
+            Event event = query.uniqueResult();
+            return Optional.of(event);
+        }
     }
 
     @Override
@@ -67,7 +68,8 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public List<Event> findByCriteria(EventCriteria criteria) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createNativeQuery(prepareQuery(criteria), Event.class).getResultList();
+            return session.createNativeQuery(prepareQuery(criteria), Event.class)
+                    .getResultList();
         }
     }
 

@@ -33,11 +33,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean isExistByEmail(String email) {
-        Session session = sessionFactory.openSession();
-        Query<User> query = session.createQuery("From User where email=:email", User.class);
-        query.setParameter("email", email);
-        User user = query.uniqueResult();
-        return user != null;
+        try(Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("From User where email=:email", User.class);
+            query.setParameter("email", email);
+            User user = query.uniqueResult();
+            return user != null;
+        }
     }
 
     @Override
@@ -56,11 +57,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        Session session = sessionFactory.openSession();
-        Query<User> query = session.createQuery("From User where id=:id", User.class);
-        query.setParameter("id", id);
-        User user = query.uniqueResult();
-        return Optional.of(user);
+        try(Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("From User where id=:id", User.class);
+            query.setParameter("id", id);
+            User user = query.uniqueResult();
+            return Optional.of(user);
+        }
     }
 
 }

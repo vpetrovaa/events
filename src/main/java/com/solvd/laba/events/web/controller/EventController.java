@@ -30,7 +30,7 @@ public class EventController {
         return eventMapper.entityToDto(event);
     }
 
-    @PatchMapping("events/{id}")
+    @PutMapping("events/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateStatus(@PathVariable(name = "id") Long id, @RequestParam("status") String status) {
         Event event = eventService.updateStatus(status, id);
