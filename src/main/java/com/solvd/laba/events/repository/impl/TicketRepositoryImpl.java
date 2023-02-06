@@ -1,5 +1,6 @@
 package com.solvd.laba.events.repository.impl;
 
+import com.solvd.laba.events.domain.Event;
 import com.solvd.laba.events.domain.Ticket;
 import com.solvd.laba.events.domain.User;
 import com.solvd.laba.events.repository.TicketRepository;

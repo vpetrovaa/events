@@ -14,4 +14,3 @@ public class ResponseDto {
     private List<String> errors;
 
 }
-

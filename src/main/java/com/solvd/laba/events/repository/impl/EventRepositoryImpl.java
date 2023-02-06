@@ -22,6 +22,11 @@ public class EventRepositoryImpl implements EventRepository {
 
     private final SessionFactory sessionFactory;
 
+    private final static String SELECT_QUERY =
+            "select events.id,  events.name, events.description, events.event_time, events.price, " +
+                    "events.type, events.topic, events.country, events.city, events.status, " +
+                    "events.latitude, events.longitude from events %s;";
+
     @Override
     public void create(Event event) {
         Transaction transaction = null;
@@ -58,11 +63,6 @@ public class EventRepositoryImpl implements EventRepository {
             }
         }
     }
-
-    private final static String SELECT_QUERY =
-            "select events.id,  events.name, events.description, events.event_time, events.price, " +
-                    "events.type, events.topic, events.country, events.city, events.status, " +
-                    "events.latitude, events.longitude from events %s;";
 
     @Override
     public List<Event> findByCriteria(EventCriteria criteria) {

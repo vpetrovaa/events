@@ -22,14 +22,7 @@ public class EventController {
     private final EventMapper eventMapper;
     private final EventCriteriaMapper eventCriteriaMapper;
 
-    @GetMapping
-    public List<EventDto> findByCriteria(EventCriteriaDto criteriaDto) {
-        EventCriteria criteria = eventCriteriaMapper.dtoToEntity(criteriaDto);
-        List<Event> events = eventService.findByCriteria(criteria);
-        return eventMapper.entityToDto(events);
-    }
-
-    @PostMapping()
+    @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
     public EventDto create(@RequestBody EventDto eventDto) {
         Event event = eventMapper.dtoToEntity(eventDto);
@@ -37,11 +30,18 @@ public class EventController {
         return eventMapper.entityToDto(event);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("events/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateStatus(@PathVariable(name = "id") Long id, @RequestParam("status") String status) {
         Event event = eventService.updateStatus(status, id);
         return eventMapper.entityToDto(event);
+    }
+
+    @GetMapping
+    public List<EventDto> findByCriteria(EventCriteriaDto criteriaDto) {
+        EventCriteria criteria = eventCriteriaMapper.dtoToEntity(criteriaDto);
+        List<Event> events = eventService.findByCriteria(criteria);
+        return eventMapper.entityToDto(events);
     }
 
 }
