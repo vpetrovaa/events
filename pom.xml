@@ -28,7 +28,6 @@
 	<hibernate.version>6.1.6.Final</hibernate.version>
 	<json.tools.version>2.2.14</json.tools.version>
 	<jsonpatch.version>1.13</jsonpatch.version>
-	<jackson-datatype-jsr310.version>2.14.2</jackson-datatype-jsr310.version>
 </properties>
 
 <dependencies>
