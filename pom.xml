@@ -27,6 +27,7 @@
 	<jwt.version>0.9.1</jwt.version>
 	<hibernate.version>6.1.6.Final</hibernate.version>
 	<json.tools.version>2.2.14</json.tools.version>
+	<jsonpatch.version>1.13</jsonpatch.version>
 </properties>
 
 <dependencies>
@@ -122,6 +123,11 @@
 		<version>${json.tools.version}</version>
 	</dependency>
 
+	<dependency>
+		<groupId>com.github.java-json-tools</groupId>
+		<artifactId>json-patch</artifactId>
+		<version>${jsonpatch.version}</version>
+	</dependency>
 
 </dependencies>
 

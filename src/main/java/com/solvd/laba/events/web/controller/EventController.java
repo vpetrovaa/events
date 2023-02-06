@@ -1,5 +1,10 @@
 package com.solvd.laba.events.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.solvd.laba.events.domain.Event;
 import com.solvd.laba.events.domain.criteria.EventCriteria;
 import com.solvd.laba.events.service.EventService;
@@ -21,6 +26,7 @@ public class EventController {
     private final EventService eventService;
     private final EventMapper eventMapper;
     private final EventCriteriaMapper eventCriteriaMapper;
+    private final ObjectMapper objectMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,6 +48,21 @@ public class EventController {
         EventCriteria criteria = eventCriteriaMapper.dtoToEntity(criteriaDto);
         List<Event> events = eventService.findByCriteria(criteria);
         return eventMapper.entityToDto(events);
+    }
+
+    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
+    public EventDto patch(@PathVariable("id") Long id, @RequestBody JsonPatch patch)
+            throws JsonPatchException, JsonProcessingException {
+        Event event = eventService.findById(id);
+        Event eventPatched = applyPatchToCustomer(patch, event);
+        //TODO eventService.update(eventPatched);
+        return eventMapper.entityToDto(eventPatched);
+    }
+
+    private Event applyPatchToCustomer(JsonPatch patch, Event targetEvent)
+            throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(targetEvent, JsonNode.class));
+        return objectMapper.treeToValue(patched, Event.class);
     }
 
 }
