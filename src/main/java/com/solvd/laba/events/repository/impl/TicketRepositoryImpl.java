@@ -23,4 +23,8 @@ public class TicketRepositoryImpl implements TicketRepository {
             return session.createNativeQuery("select * from tickets where user_id=" + user.getId(), Ticket.class).getResultList();
         }
     }
+
+    public void helloVarya(){
+        System.out.println("Hello varya");
+    }
 }
