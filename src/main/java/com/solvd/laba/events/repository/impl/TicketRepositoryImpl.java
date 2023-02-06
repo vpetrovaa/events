@@ -1,6 +1,5 @@
 package com.solvd.laba.events.repository.impl;
 
-import com.solvd.laba.events.domain.Event;
 import com.solvd.laba.events.domain.Ticket;
 import com.solvd.laba.events.domain.User;
 import com.solvd.laba.events.repository.TicketRepository;
@@ -19,6 +18,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public List<Ticket> findByUser(User user) {
+        System.out.println("Varya");
         try (Session session = sessionFactory.openSession()) {
             return session.createNativeQuery("select * from tickets where user_id=" + user.getId(), Ticket.class).getResultList();
         }
