@@ -2,6 +2,8 @@ package com.solvd.laba.events.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.springframework.data.util.Lazy;
 
 import java.math.BigDecimal;
 
@@ -18,7 +20,7 @@ public class Ticket {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id")
     private Event event;
 

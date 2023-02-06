@@ -1,5 +1,6 @@
 package com.solvd.laba.events.service.impl;
 
+import com.solvd.laba.events.domain.Event;
 import com.solvd.laba.events.domain.Ticket;
 import com.solvd.laba.events.domain.User;
 import com.solvd.laba.events.repository.TicketRepository;
@@ -17,7 +18,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> findByUser(User user) {
-        return ticketRepository.findByUser(user);
+        List<Ticket> tickets = ticketRepository.findByUser(user);
+        Event event = tickets.get(0).getEvent();
+        return tickets;
     }
 
 }
