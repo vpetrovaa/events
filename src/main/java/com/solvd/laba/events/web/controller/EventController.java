@@ -8,8 +8,9 @@ import com.solvd.laba.events.web.dto.criteria.EventCriteriaDto;
 import com.solvd.laba.events.web.mapper.EventMapper;
 import com.solvd.laba.events.web.mapper.criteria.EventCriteriaMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -27,21 +28,6 @@ public class EventController {
         EventCriteria criteria = eventCriteriaMapper.dtoToEntity(criteriaDto);
         List<Event> events = eventService.findByCriteria(criteria);
         return eventMapper.entityToDto(events);
-    }
-
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public EventDto create(@RequestBody EventDto eventDto) {
-        Event event = eventMapper.dtoToEntity(eventDto);
-        event = eventService.create(event);
-        return eventMapper.entityToDto(event);
-    }
-
-    @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public EventDto updateStatus(@PathVariable(name = "id") Long id, @RequestParam("status") String status) {
-        Event event = eventService.updateStatus(status, id);
-        return eventMapper.entityToDto(event);
     }
 
 }

@@ -9,8 +9,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
@@ -38,29 +36,6 @@ public class UserRepositoryImpl implements UserRepository {
         query.setParameter("email", email);
         User user = query.uniqueResult();
         return user != null;
-    }
-
-    @Override
-    public void updatePassword(User user) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.merge(user);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-    }
-
-    @Override
-    public Optional<User> findById(Long id) {
-        Session session = sessionFactory.openSession();
-        Query<User> query = session.createQuery("From User where id=:id", User.class);
-        query.setParameter("id", id);
-        User user = query.uniqueResult();
-        return Optional.of(user);
     }
 
 }
