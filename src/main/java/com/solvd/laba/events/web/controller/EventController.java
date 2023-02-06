@@ -22,7 +22,7 @@ public class EventController {
     private final EventMapper eventMapper;
     private final EventCriteriaMapper eventCriteriaMapper;
 
-    @PostMapping("/events")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventDto create(@RequestBody EventDto eventDto) {
         Event event = eventMapper.dtoToEntity(eventDto);
@@ -30,7 +30,7 @@ public class EventController {
         return eventMapper.entityToDto(event);
     }
 
-    @PutMapping("events/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateStatus(@PathVariable(name = "id") Long id, @RequestParam("status") String status) {
         Event event = eventService.updateStatus(status, id);
