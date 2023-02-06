@@ -18,20 +18,9 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public List<Ticket> findByUser(User user) {
-        System.out.println("Liza");
         try (Session session = sessionFactory.openSession()) {
             return session.createNativeQuery("select * from tickets where user_id=" + user.getId(), Ticket.class).getResultList();
         }
     }
-
-    public void helloVarya(){
-        System.out.println("Hello varya");
-    }
-
-    public void check(){
-        System.out.println("skdmflms");
-        return;
-    }
-
 
 }
