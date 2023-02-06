@@ -1,7 +1,5 @@
 package com.solvd.laba.events.web.dto;
 
-import com.solvd.laba.events.domain.Event;
-import com.solvd.laba.events.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +14,8 @@ import java.math.BigDecimal;
 public class TicketDto {
 
     private Long id;
-    private User user;
-    private Event event;
+    private UserDto user;
+    private EventDto event;
     private Integer amount;
     private BigDecimal price;
 

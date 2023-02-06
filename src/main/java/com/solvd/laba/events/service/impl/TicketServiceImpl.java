@@ -15,6 +15,12 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
 
     @Override
+    public Ticket create(Ticket ticket) {
+        ticketRepository.create(ticket);
+        return ticket;
+    }
+
+    @Override
     public List<Ticket> findAllByUserId(Long id) {
         return ticketRepository.findAllByUserId(id);
     }

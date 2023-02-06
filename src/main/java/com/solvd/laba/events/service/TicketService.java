@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface TicketService {
 
+    Ticket create(Ticket ticket);
+
     List<Ticket> findAllByUserId(Long id);
 
 }
