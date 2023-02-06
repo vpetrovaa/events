@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface EventService {
 
-    List<Event> findByCriteria(EventCriteria criteria);
+    Event create(Event event);
+
+    Event findById(Long id);
+
+    Event updateStatus(String status, Long id);
 
     List<Event> findByCriteria(EventCriteria criteria);
 
