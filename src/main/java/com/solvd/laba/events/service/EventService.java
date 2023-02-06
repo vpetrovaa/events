@@ -9,4 +9,6 @@ public interface EventService {
 
     List<Event> findByCriteria(EventCriteria criteria);
 
+    List<Event> findByCriteria(EventCriteria criteria);
+
 }
