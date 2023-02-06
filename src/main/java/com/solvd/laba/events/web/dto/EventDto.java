@@ -1,12 +1,12 @@
 package com.solvd.laba.events.web.dto;
 
 import com.solvd.laba.events.domain.Event;
+import com.solvd.laba.events.domain.Point;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -25,8 +25,7 @@ public class EventDto {
     private String topic;
     private String country;
     private String city;
-    private Point latitude;
-    private Point longitude;
+    private Point coordinates;
     private Event.Status status;
 
 }

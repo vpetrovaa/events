@@ -3,7 +3,6 @@ package com.solvd.laba.events.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -26,6 +25,7 @@ public class Event {
 
     private BigDecimal price;
 
+    @Enumerated(EnumType.STRING)
     private Type type;
 
     private String topic;
@@ -34,10 +34,14 @@ public class Event {
 
     private String city;
 
-    private Point latitude;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(name = "latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "longitude"))
+    })
+    private Point coordinates;
 
-    private Point longitude;
-
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
