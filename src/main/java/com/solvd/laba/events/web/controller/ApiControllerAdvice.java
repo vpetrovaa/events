@@ -1,5 +1,7 @@
 package com.solvd.laba.events.web.controller;
 
+import com.solvd.laba.events.domain.exception.IllegalTimeException;
+import com.solvd.laba.events.domain.exception.PasswordMismatchException;
 import com.solvd.laba.events.domain.exception.ResourceAlreadyExistsException;
 import com.solvd.laba.events.domain.exception.ResourceDoesNotExistException;
 import com.solvd.laba.events.web.dto.ResponseDto;
@@ -32,7 +34,21 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseDto IllegalArgumentException(IllegalArgumentException ex) {
+    public ResponseDto handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.error(ex.getMessage());
+        return new ResponseDto(List.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalTimeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseDto handleIllegalTimeException(IllegalTimeException ex) {
+        log.error(ex.getMessage());
+        return new ResponseDto(List.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(PasswordMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseDto handlePasswordMismatchException(PasswordMismatchException ex) {
         log.error(ex.getMessage());
         return new ResponseDto(List.of(ex.getMessage()));
     }
