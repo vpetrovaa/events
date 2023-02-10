@@ -7,8 +7,12 @@ import java.util.List;
 
 public interface TicketService {
 
-    Ticket create(Ticket ticket);
+    Ticket create(Long userId, Long eventId, Integer amount);
 
     List<Ticket> findAll(Long userId, LocalDateTime currentDate);
+
+    Ticket findById(Long id);
+
+    void deleteById(Long id);
 
 }

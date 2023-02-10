@@ -4,11 +4,11 @@ import com.solvd.laba.events.domain.User;
 import com.solvd.laba.events.web.dto.UserDto;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {TicketMapper.class})
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    UserDto entityToDto(User user);
+    UserDto toDto(User user);
 
-    User dtoToEntity(UserDto userDto);
+    User toEntity(UserDto userDto);
 
 }

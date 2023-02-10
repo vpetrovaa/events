@@ -6,13 +6,13 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {TicketMapper.class})
+@Mapper(componentModel = "spring")
 public interface EventMapper {
 
-    EventDto entityToDto(Event event);
+    EventDto toDto(Event event);
 
-    List<EventDto> entityToDto(List<Event> events);
+    List<EventDto> toDto(List<Event> events);
 
-    Event dtoToEntity(EventDto eventDto);
+    Event toEntity(EventDto eventDto);
 
 }

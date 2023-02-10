@@ -26,12 +26,6 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
 
     @Override
-    public Ticket create(Ticket ticket) {
-        ticketRepository.save(ticket);
-        return ticket;
-    }
-
-    @Override
     public List<Ticket> findAll(Long userId, LocalDateTime currentDate) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Ticket> criteriaQuery = criteriaBuilder.createQuery(Ticket.class);
@@ -48,6 +42,21 @@ public class TicketServiceImpl implements TicketService {
         Predicate finalPredicate = criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         criteriaQuery.where(finalPredicate);
         return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    @Override
+    public Ticket create(Long userId, Long eventId, Integer amount) {
+        return null;
+    }
+
+    @Override
+    public Ticket findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
     }
 
 }

@@ -6,13 +6,13 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {EventMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring")
 public interface TicketMapper {
 
-    Ticket dtoToEntity(TicketDto ticketDto);
+    Ticket toEntity(TicketDto ticketDto);
 
-    TicketDto entityToDto(Ticket ticket);
+    TicketDto toDto(Ticket ticket);
 
-    List<TicketDto> entitiesToDto(List<Ticket> tickets);
+    List<TicketDto> toDto(List<Ticket> tickets);
 
 }
