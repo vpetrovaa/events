@@ -6,16 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 public class EventCriteriaDto {
 
-    private String city;
+    private List<String> cities;
     private Point userLocation;
     private Integer maxRadius;
-    private Event.Type type;
+    private List<Event.Type> types;
     private BigDecimal maxPrice;
-    private String topic;
+    private BigDecimal minPrice;
+    private List<String> topics;
+    private LocalDateTime minDate;
 
 }
