@@ -1,17 +1,10 @@
 package com.solvd.laba.events.repository;
 
 import com.solvd.laba.events.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+public interface UserRepository extends JpaRepository<User, Long> {
 
-public interface UserRepository {
-
-    void create(User user);
-
-    boolean isExistByEmail(String email);
-
-    void updatePassword(User user);
-
-    Optional<User> findById(Long id);
+    boolean existsByEmail(String email);
 
 }
