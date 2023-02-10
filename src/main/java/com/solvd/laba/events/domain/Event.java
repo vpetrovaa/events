@@ -49,10 +49,7 @@ public class Event {
 
     public enum Status {
 
-        ACTIVE,
-        RESCHEDULED,
-        CANCELED,
-        FINISHED,
+        PUBLISHED,
         DRAFT
 
     }
