@@ -1,70 +1,155 @@
 package com.solvd.laba.events.service.impl;
 
 import com.solvd.laba.events.domain.Event;
-import com.solvd.laba.events.domain.Point;
 import com.solvd.laba.events.domain.criteria.EventCriteria;
+import com.solvd.laba.events.domain.exception.IllegalTimeException;
 import com.solvd.laba.events.domain.exception.ResourceDoesNotExistException;
 import com.solvd.laba.events.repository.EventRepository;
 import com.solvd.laba.events.service.EventService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
+    private static final int PAGE_SIZE = 20;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final EventRepository eventRepository;
 
     @Override
     public Event create(Event event) {
-        eventRepository.create(event);
+        eventRepository.save(event);
+        return event;
+    }
+
+    @Override
+    public Event publish(Event event) {
+        event.setStatus(Event.Status.PUBLISHED);
+        eventRepository.save(event);
         return event;
     }
 
     @Override
     public Event findById(Long id) {
         return eventRepository.findById(id)
-                .orElseThrow(() -> new ResourceDoesNotExistException("There are no event with id" + id));
+                .orElseThrow(() -> new ResourceDoesNotExistException("Event with id " + id + " does not exist"));
     }
 
     @Override
-    public Event updateStatus(String status, Long id) {
-        Event event = findById(id);
-        event.setStatus(Event.Status.valueOf(status.toUpperCase()));
-        eventRepository.updateStatus(event);
-        return event;
+    public List<Event> findAll(int currentPage, EventCriteria criteria) {
+        List<Event> events;
+        List<Event> eventsPaged;
+        if (criteria != null) {
+            events = findByCriteria(criteria);
+        } else {
+            events = eventRepository.findAll();
+        }
+        Sort eventTimeSort = Sort.by("eventTime");
+        int startItem = currentPage * PAGE_SIZE;
+        if (events.size() < startItem) {
+            eventsPaged = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + PAGE_SIZE, events.size());
+            eventsPaged = events.subList(startItem, toIndex);
+        }
+        Pageable paging = PageRequest.of(currentPage, PAGE_SIZE, eventTimeSort);
+        Page<Event> eventPage = new PageImpl<>(eventsPaged, paging, events.size());
+        return eventPage.getContent();
     }
 
     @Override
     public List<Event> findByCriteria(EventCriteria criteria) {
-        return eventRepository.findByCriteria(criteria)
-                .stream()
-                .filter(event -> {
-                    if (Objects.nonNull(criteria.getUserLocation()) && Objects.nonNull(criteria.getMaxRadius()))
-                        return getDistanceBetweenPoints(criteria.getUserLocation(), event.getCoordinates()) <= criteria.getMaxRadius();
-                    else return true;
-                })
-                .collect(Collectors.toList());
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
+        Root<Event> eventRoot = criteriaQuery.from(Event.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        List<String> cities = criteria.getCities();
+        List<Predicate> cityPredicates = new ArrayList<>();
+        if (cities != null && !cities.isEmpty()) {
+            for (String city : cities) {
+                cityPredicates.add(criteriaBuilder.equal(eventRoot.get("country"), city));
+            }
+            Predicate cityFinalPredicate = criteriaBuilder.or(cityPredicates.toArray(new Predicate[0]));
+            predicates.add(cityFinalPredicate);
+        }
+
+        //TODO create sql function for distance between two points and add it to criteriaBuilder
+
+        List<Event.Type> types = criteria.getTypes();
+        List<Predicate> typePredicates = new ArrayList<>();
+        if (types != null && !types.isEmpty()) {
+            for (Event.Type type : types) {
+                typePredicates.add(criteriaBuilder.equal(eventRoot.get("type"), type));
+            }
+            Predicate typeFinalPredicate = criteriaBuilder.or(typePredicates.toArray(new Predicate[0]));
+            predicates.add(typeFinalPredicate);
+        }
+
+        BigDecimal minPrice = criteria.getMinPrice();
+        if (minPrice != null) {
+            Predicate minPricePredicate = criteriaBuilder.greaterThanOrEqualTo(eventRoot.get("price"), minPrice);
+            predicates.add(minPricePredicate);
+        }
+
+        BigDecimal maxPrice = criteria.getMaxPrice();
+        if (maxPrice != null) {
+            Predicate maxPricePredicate = criteriaBuilder.lessThanOrEqualTo(eventRoot.get("price"), maxPrice);
+            predicates.add(maxPricePredicate);
+        }
+
+        LocalDateTime minDate = criteria.getMinDate();
+        if (minDate != null) {
+            Predicate minDatePredicate = criteriaBuilder.greaterThanOrEqualTo(eventRoot.get("eventTime"), minDate);
+            predicates.add(minDatePredicate);
+        }
+
+        List<String> topics = criteria.getTopics();
+        List<Predicate> topicPredicates = new ArrayList<>();
+        if (topics != null && !topics.isEmpty()) {
+            for (String topic : topics) {
+                topicPredicates.add(criteriaBuilder.equal(eventRoot.get("topic"), topic));
+            }
+            Predicate topicFinalPredicate = criteriaBuilder.or(topicPredicates.toArray(new Predicate[0]));
+            predicates.add(topicFinalPredicate);
+        }
+
+        Predicate finalPredicate = criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        criteriaQuery.where(finalPredicate);
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    private Double getDistanceBetweenPoints(Point userLocation, Point eventLocation) {
-        int earthRadiusKm = 6371;
-        double latitudeDiff = degreeToRadian(eventLocation.getLatitude() - userLocation.getLatitude());
-        double longitudeDiff = degreeToRadian(eventLocation.getLongitude() - userLocation.getLongitude());
-        double a = Math.sin(latitudeDiff / 2) * Math.sin(latitudeDiff / 2) +
-                Math.cos(degreeToRadian(userLocation.getLatitude())) *
-                        Math.cos(degreeToRadian(eventLocation.getLatitude())) *
-                        Math.sin(longitudeDiff / 2) * Math.sin(longitudeDiff / 2);
-        var distance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return earthRadiusKm * distance;
+    @Override
+    public Event reschedule(Long id, LocalDateTime newDate) {
+        Event event = findById(id);
+        if (newDate.isBefore(LocalDateTime.now())) {
+            throw new IllegalTimeException("Chosen date was in past");
+        }
+        event.setEventTime(newDate);
+        eventRepository.save(event);
+        return event;
     }
 
-    private Double degreeToRadian(Double degree) {
-        return degree * (Math.PI / 180);
+    @Override
+    public void delete(Long id) {
+        eventRepository.deleteById(id);
     }
 
 }

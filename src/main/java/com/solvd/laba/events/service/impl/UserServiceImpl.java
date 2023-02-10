@@ -22,11 +22,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User create(User user) {
-        if (userRepository.isExistByEmail(user.getEmail())) {
-            throw new ResourceAlreadyExistsException("Such user is already exists");
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new ResourceAlreadyExistsException("User with email " + user.getEmail() + " already exists");
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.create(user);
+        userRepository.save(user);
         return user;
     }
 
@@ -39,11 +39,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updatePassword(String newPassword, String oldPassword, Long id) {
         User user = findById(id);
-        if(!bCryptPasswordEncoder.matches(oldPassword, bCryptPasswordEncoder.encode(oldPassword))){
+        if (!bCryptPasswordEncoder.matches(oldPassword, bCryptPasswordEncoder.encode(oldPassword))) {
             throw new PasswordMismatchException("Passwords are different");
         }
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
-        userRepository.updatePassword(user);
+        userRepository.save(user);
         return user;
     }
 
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public User resetPassword(String newPassword, Long id) {
         User user = findById(id);
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
-        userRepository.updatePassword(user);
+        userRepository.save(user);
         return user;
     }
 
