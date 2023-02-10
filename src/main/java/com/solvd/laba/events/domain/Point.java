@@ -1,7 +1,8 @@
 package com.solvd.laba.events.domain;
 
 import jakarta.persistence.Embeddable;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Embeddable
 @Getter
