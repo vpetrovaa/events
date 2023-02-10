@@ -15,7 +15,7 @@ create table users
 
 create table events(
 	id bigserial,
-	name varchar(45) not null,
+	name varchar(45) not null unique,
 	description varchar(1000),
 	event_time timestamp,
 	price decimal(10, 2),
@@ -23,7 +23,8 @@ create table events(
 	topic varchar(45),
 	country varchar(45),
 	city varchar(45),
-	coordinates point,
+	latitude float,
+	longitude float,
 	status varchar(45),
 	primary key (id)
 );
@@ -33,6 +34,7 @@ create table tickets (
 	user_id bigint not null,
 	event_id bigint not null,
 	amount integer not null,
+	price decimal,
 	primary key (id),
     foreign key (user_id) references users (id) on update cascade on delete cascade,
     foreign key (event_id) references events (id) on update cascade on delete cascade
