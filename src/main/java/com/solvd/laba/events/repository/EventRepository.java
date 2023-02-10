@@ -1,19 +1,12 @@
 package com.solvd.laba.events.repository;
 
 import com.solvd.laba.events.domain.Event;
-import com.solvd.laba.events.domain.criteria.EventCriteria;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
+public interface EventRepository extends JpaRepository<Event, Long> {
 
-public interface EventRepository {
-
-    void create(Event event);
-
-    Optional<Event> findById(Long id);
-
-    void updateStatus(Event event);
-
-    List<Event> findByCriteria(EventCriteria criteria);
+    Page<Event> findAll(Pageable pageable);
 
 }

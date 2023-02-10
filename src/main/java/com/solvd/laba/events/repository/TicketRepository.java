@@ -1,13 +1,8 @@
 package com.solvd.laba.events.repository;
 
 import com.solvd.laba.events.domain.Ticket;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface TicketRepository {
-
-    void create(Ticket ticket);
-
-    List<Ticket> findAllByUserId(Long id);
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
 }
