@@ -1,5 +1,6 @@
 package com.solvd.laba.events.service.impl;
 
+import com.solvd.laba.events.domain.Password;
 import com.solvd.laba.events.domain.User;
 import com.solvd.laba.events.domain.exception.PasswordMismatchException;
 import com.solvd.laba.events.domain.exception.ResourceAlreadyExistsException;
@@ -37,12 +38,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updatePassword(String newPassword, String oldPassword, Long id) {
+    public User updatePassword(Password password, Long id) {
         User user = findById(id);
-        if (!bCryptPasswordEncoder.matches(oldPassword, bCryptPasswordEncoder.encode(oldPassword))) {
+        if (!bCryptPasswordEncoder.matches(password.getOldPassword(), user.getPassword())) {
             throw new PasswordMismatchException("Passwords are different");
         }
-        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        user.setPassword(bCryptPasswordEncoder.encode(password.getNewPassword()));
         userRepository.save(user);
         return user;
     }

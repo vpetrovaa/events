@@ -33,7 +33,7 @@ create table tickets (
     id bigserial,
 	user_id bigint not null,
 	event_id bigint not null,
-	amount integer not null,
+	amount integer not null default 1,
 	price decimal,
 	primary key (id),
     foreign key (user_id) references users (id) on update cascade on delete cascade,
