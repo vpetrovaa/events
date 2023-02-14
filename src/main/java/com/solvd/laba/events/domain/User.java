@@ -2,6 +2,7 @@ package com.solvd.laba.events.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
 
@@ -30,11 +31,15 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Ticket> tickets;
 
-    public enum Role {
+    public enum Role implements GrantedAuthority {
 
         ROLE_ADMIN,
-        ROLE_USER
+        ROLE_USER;
 
+        @Override
+        public String getAuthority() {
+            return this.name();
+        }
     }
 
 }

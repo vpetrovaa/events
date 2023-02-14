@@ -38,6 +38,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceDoesNotExistException("There are no user with such email"));
+    }
+
+    @Override
     public User updatePassword(Password password, Long id) {
         User user = findById(id);
         if (!bCryptPasswordEncoder.matches(password.getOldPassword(), user.getPassword())) {

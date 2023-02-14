@@ -9,6 +9,8 @@ public interface UserService {
 
     User findById(Long id);
 
+    User findByEmail(String email);
+
     User updatePassword(Password password, Long id);
 
     User resetPassword(String newPassword, Long id);
