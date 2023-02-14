@@ -15,3 +15,9 @@ spring:
   liquibase:
     change-log: classpath:db.changelog/db.changelog-master.yaml
     default-schema: events_schema
+
+jwt:
+  properties:
+    secret: qBTmv4oXFFR2GwjexDJ4t6fsIUIUhhXqlktXjXdkcyygs8nPVEwMfo29VDRRepYDlslslslslVV5IkIxBMzr7OEHXEHd37w
+    refresh: 30
+    access: 5

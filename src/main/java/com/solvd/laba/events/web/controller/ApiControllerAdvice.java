@@ -1,9 +1,6 @@
 package com.solvd.laba.events.web.controller;
 
-import com.solvd.laba.events.domain.exception.IllegalTimeException;
-import com.solvd.laba.events.domain.exception.PasswordMismatchException;
-import com.solvd.laba.events.domain.exception.ResourceAlreadyExistsException;
-import com.solvd.laba.events.domain.exception.ResourceDoesNotExistException;
+import com.solvd.laba.events.domain.exception.*;
 import com.solvd.laba.events.web.dto.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -63,6 +60,14 @@ public class ApiControllerAdvice {
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseDto handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
+        log.error(ex.getMessage());
+        return new ResponseDto(List.of(ex.getMessage()));
+    }
+
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseDto handleAuthenticationException(AuthenticationException ex) {
         log.error(ex.getMessage());
         return new ResponseDto(List.of(ex.getMessage()));
     }
