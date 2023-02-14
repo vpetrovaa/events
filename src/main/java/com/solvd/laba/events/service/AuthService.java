@@ -11,7 +11,7 @@ public interface AuthService {
 
     JwtResponse refresh(JwtRefresh refresh);
 
-    void sendRestoreToken(JwtReset reset);
+    void sendResetToken(JwtReset reset);
 
     void resetPassword(String token, String password);
 

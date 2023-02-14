@@ -19,7 +19,7 @@ public class EventCriteria {
 
     private List<String> cities;
     private Point userLocation;
-    private Integer maxRadius;
+    private Double maxRadius;
     private List<Event.Type> types;
     private BigDecimal maxPrice;
     private BigDecimal minPrice;

@@ -31,6 +31,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Ticket> tickets;
 
+    @Column(name = "is_activated")
+    private boolean isActivated;
+
     public enum Role implements GrantedAuthority {
 
         ROLE_ADMIN,
