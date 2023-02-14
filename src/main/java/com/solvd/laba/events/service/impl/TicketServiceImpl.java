@@ -36,7 +36,7 @@ public class TicketServiceImpl implements TicketService {
         predicates.add(userPredicate);
 
         if (currentDate != null) {
-            // TODO create startOfDay and endOfDay and add it co criteriaBuilder
+            // TODO create startOfDay and endOfDay and add it to criteriaBuilder
         }
 
         Predicate finalPredicate = criteriaBuilder.and(predicates.toArray(new Predicate[0]));
