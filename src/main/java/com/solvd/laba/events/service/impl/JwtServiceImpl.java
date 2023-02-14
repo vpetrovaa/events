@@ -32,7 +32,7 @@ public class JwtServiceImpl implements JwtService {
                 .setSubject(user.getEmail())
                 .setExpiration(accessExpiration)
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
-                .claim("role", user.getRole().getAuthority()) //
+                .claim("role", user.getRole().getAuthority())
                 .claim("name", user.getName())
                 .claim("id", user.getId())
                 .compact();
@@ -46,6 +46,31 @@ public class JwtServiceImpl implements JwtService {
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .setExpiration(refreshExpiration)
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
+                .compact();
+    }
+
+    @Override
+    public String generateResetToken(User user) {
+        final LocalDateTime now = LocalDateTime.now();
+        final Instant resetExpirationInstant = now.plusHours(jwtProperties.getReset()).atZone(ZoneId.systemDefault()).toInstant();
+        final Date resetExpiration = Date.from(resetExpirationInstant);
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .setExpiration(resetExpiration)
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
+                .claim("id", user.getId())
+                .compact();
+    }
+
+    @Override
+    public String generateActivatingToken(User user) {
+        final LocalDateTime now = LocalDateTime.now();
+        final Instant activatingExpirationInstant = now.plusDays(jwtProperties.getActivating()).atZone(ZoneId.systemDefault()).toInstant();
+        final Date activatingExpiration = Date.from(activatingExpirationInstant);
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .setExpiration(activatingExpiration)
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
                 .compact();
     }

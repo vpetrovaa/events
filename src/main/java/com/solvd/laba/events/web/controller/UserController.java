@@ -19,6 +19,7 @@ import com.solvd.laba.events.web.dto.UserDto;
 import com.solvd.laba.events.web.dto.criteria.EventCriteriaDto;
 import com.solvd.laba.events.web.dto.jwt.JwtAuthDto;
 import com.solvd.laba.events.web.dto.jwt.JwtRefreshDto;
+import com.solvd.laba.events.web.dto.jwt.JwtResetDto;
 import com.solvd.laba.events.web.dto.jwt.JwtResponseDto;
 import com.solvd.laba.events.web.mapper.*;
 import com.solvd.laba.events.web.mapper.criteria.EventCriteriaMapper;
@@ -47,6 +48,7 @@ public class UserController {
     private final EventService eventService;
     private final EventMapper eventMapper;
     private final EventCriteriaMapper eventCriteriaMapper;
+    private final JwtResetMapper resetMapper;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
@@ -73,12 +75,22 @@ public class UserController {
         return userDto;
     }
 
-    @PutMapping("/{userId}/password")
+    @PostMapping("passwords/{userId}")
     public void changePassword(@PathVariable Long userId,
                                @RequestBody PasswordDto passwordDto) {
         Password password = passwordMapper.toEntity(passwordDto);
         userService.updatePassword(password, userId);
-        //TODO methods to change and reset passwords
+    }
+
+    @PostMapping("passwords/reset")
+    public void forget(@RequestBody JwtResetDto resetDto) {
+        authService.sendResetToken(resetMapper.toEntity(resetDto));
+    }
+
+    @PostMapping("/password/restore")
+    public void restore(@RequestParam String token,
+                        @RequestBody String password) {
+        authService.resetPassword(token, password);
     }
 
     @GetMapping("/events")

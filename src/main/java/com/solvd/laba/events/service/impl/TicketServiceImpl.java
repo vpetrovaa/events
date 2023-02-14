@@ -36,7 +36,12 @@ public class TicketServiceImpl implements TicketService {
         predicates.add(userPredicate);
 
         if (currentDate != null) {
-            // TODO create startOfDay and endOfDay and add it to criteriaBuilder
+            LocalDateTime startOfTheDay = currentDate.plusHours(12);
+            LocalDateTime endOfTheDay = currentDate.plusHours(36);
+            Predicate startOfTheDayPredicate = criteriaBuilder.greaterThanOrEqualTo(ticketRoot.get("event").get("eventTime"), startOfTheDay);
+            predicates.add(startOfTheDayPredicate);
+            Predicate endOfTheDayPredicate = criteriaBuilder.lessThanOrEqualTo(ticketRoot.get("event").get("eventTime"), endOfTheDay);
+            predicates.add(endOfTheDayPredicate);
         }
 
         Predicate finalPredicate = criteriaBuilder.and(predicates.toArray(new Predicate[0]));

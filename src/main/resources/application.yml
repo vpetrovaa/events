@@ -21,3 +21,5 @@ jwt:
     secret: qBTmv4oXFFR2GwjexDJ4t6fsIUIUhhXqlktXjXdkcyygs8nPVEwMfo29VDRRepYDlslslslslVV5IkIxBMzr7OEHXEHd37w
     refresh: 30
     access: 5
+    reset: 2
+    activating: 3

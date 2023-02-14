@@ -26,6 +26,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtResponse login(JwtAuth requestDto) {
         final User user = userService.findByEmail(requestDto.getEmail());
+        if (!user.isActivated()) {
+            throw new AuthenticationException("User with id " + user.getId() + " is not activated");
+        }
         if (!bCryptPasswordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new AuthenticationException("Wrong password");
         }
@@ -33,13 +36,17 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void sendRestoreToken(JwtReset reset) {
-        //TODO send restore token method
+    public void sendResetToken(JwtReset reset) {
+        User user = userService.findByEmail(reset.getEmail());
+        String resetToken = jwtService.generateResetToken(user);
+        //TODO send this token to email
     }
 
     @Override
     public void resetPassword(String token, String password) {
-        //TODO reset password method
+        JwtUser jwtUser = jwtService.extractAllClaims(token);
+        User user = userService.findByEmail(jwtUser.getEmail());
+        userService.resetPassword(password, user.getId());
     }
 
     @Override

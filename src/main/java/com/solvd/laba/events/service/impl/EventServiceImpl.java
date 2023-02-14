@@ -8,10 +8,7 @@ import com.solvd.laba.events.repository.EventRepository;
 import com.solvd.laba.events.service.EventService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -91,7 +88,16 @@ public class EventServiceImpl implements EventService {
             predicates.add(cityFinalPredicate);
         }
 
-        //TODO create sql function for distance between two points and add it to criteriaBuilder
+        if (userLocationAndMaxRadiusNotNull(criteria)) {
+            Expression<Double> distance = criteriaBuilder.function("calculate_distance", Double.class,
+                    eventRoot.get("coordinates").get("latitude"),
+                    eventRoot.get("coordinates").get("longitude"),
+                    criteriaBuilder.literal(criteria.getUserLocation().getLatitude()),
+                    criteriaBuilder.literal(criteria.getUserLocation().getLongitude())
+            );
+            Predicate userLocationPredicate = criteriaBuilder.lessThanOrEqualTo(distance, criteria.getMaxRadius());
+            predicates.add(userLocationPredicate);
+        }
 
         List<Event.Type> types = criteria.getTypes();
         List<Predicate> typePredicates = new ArrayList<>();
@@ -150,6 +156,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public void delete(Long id) {
         eventRepository.deleteById(id);
+    }
+
+    private boolean userLocationAndMaxRadiusNotNull(EventCriteria eventCriteria) {
+        return eventCriteria.getUserLocation() != null && eventCriteria.getUserLocation().getLatitude() != null
+                && eventCriteria.getUserLocation().getLongitude() != null && eventCriteria.getMaxRadius() != null;
     }
 
 }

@@ -10,6 +10,7 @@ create table users
 	password varchar(60) not null,
 	first_name varchar(45) not null,
 	last_name varchar(45) not null,
+	is_activated boolean not null default false,
 	primary key (id)
 );
 
