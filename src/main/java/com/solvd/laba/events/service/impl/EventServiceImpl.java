@@ -1,10 +1,12 @@
 package com.solvd.laba.events.service.impl;
 
 import com.solvd.laba.events.domain.Event;
+import com.solvd.laba.events.domain.Ticket;
 import com.solvd.laba.events.domain.criteria.EventCriteria;
 import com.solvd.laba.events.domain.exception.IllegalTimeException;
 import com.solvd.laba.events.domain.exception.ResourceDoesNotExistException;
 import com.solvd.laba.events.repository.EventRepository;
+import com.solvd.laba.events.service.EmailService;
 import com.solvd.laba.events.service.EventService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -15,9 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class EventServiceImpl implements EventService {
     private EntityManager entityManager;
 
     private final EventRepository eventRepository;
+    private final EmailService emailService;
 
     @Override
     public Event create(Event event) {
@@ -150,11 +151,20 @@ public class EventServiceImpl implements EventService {
         }
         event.setEventTime(newDate);
         eventRepository.save(event);
+        Map<String, Object> params = new HashMap<>();
+        event.getTickets().stream()
+                .map(Ticket::getUser)
+                .forEach(u -> emailService.sendRescheduledEventEmail(u, params, event));
         return event;
     }
 
     @Override
     public void delete(Long id) {
+        Event event = findById(id);
+        Map<String, Object> params = new HashMap<>();
+        event.getTickets().stream()
+                .map(Ticket::getUser)
+                .forEach(u -> emailService.sendDeletedEventEmail(u, params, event));
         eventRepository.deleteById(id);
     }
 

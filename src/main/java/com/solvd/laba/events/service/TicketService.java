@@ -11,6 +11,8 @@ public interface TicketService {
 
     List<Ticket> findAll(Long userId, LocalDateTime currentDate);
 
+    List<Ticket> findAll();
+
     Ticket findById(Long id);
 
     void deleteById(Long id);
