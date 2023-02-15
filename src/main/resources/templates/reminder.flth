@@ -1,0 +1,14 @@
+<html lang="en">
+<head>
+    <title>Reset password</title>
+</head>
+<body>
+    <p>Dear <b>${user.name} ${user.surname}</b>.This is email-reminder of your tickets</p>
+    <p>
+       <#list tickets as ticket>
+       ${ticket}
+       </#list>
+    </p>
+    <p>Have a nice day.</p>
+</body>
+</html>

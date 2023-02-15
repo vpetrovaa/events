@@ -1,5 +1,6 @@
 package com.solvd.laba.events.service;
 
+import com.solvd.laba.events.domain.User;
 import com.solvd.laba.events.domain.jwt.JwtAuth;
 import com.solvd.laba.events.domain.jwt.JwtRefresh;
 import com.solvd.laba.events.domain.jwt.JwtReset;

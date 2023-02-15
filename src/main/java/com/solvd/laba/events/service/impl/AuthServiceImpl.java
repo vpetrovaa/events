@@ -7,6 +7,7 @@ import com.solvd.laba.events.domain.jwt.JwtRefresh;
 import com.solvd.laba.events.domain.jwt.JwtReset;
 import com.solvd.laba.events.domain.jwt.JwtResponse;
 import com.solvd.laba.events.service.AuthService;
+import com.solvd.laba.events.service.EmailService;
 import com.solvd.laba.events.service.JwtService;
 import com.solvd.laba.events.service.UserService;
 import com.solvd.laba.events.web.security.JwtUser;
@@ -15,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -22,6 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtService jwtService;
+    private final EmailService emailService;
 
     @Override
     public JwtResponse login(JwtAuth requestDto) {
@@ -39,7 +44,9 @@ public class AuthServiceImpl implements AuthService {
     public void sendResetToken(JwtReset reset) {
         User user = userService.findByEmail(reset.getEmail());
         String resetToken = jwtService.generateResetToken(user);
-        //TODO send this token to email
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", resetToken);
+        emailService.sendResetTokenEmail(user, params);
     }
 
     @Override

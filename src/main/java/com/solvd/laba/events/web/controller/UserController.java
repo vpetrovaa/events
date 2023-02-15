@@ -24,7 +24,6 @@ import com.solvd.laba.events.web.dto.jwt.JwtResponseDto;
 import com.solvd.laba.events.web.mapper.*;
 import com.solvd.laba.events.web.mapper.criteria.EventCriteriaMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +50,6 @@ public class UserController {
     private final JwtResetMapper resetMapper;
 
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.CREATED)
     public JwtResponseDto login(@RequestBody @Validated JwtAuthDto requestUserDto) {
         JwtAuth requestUser = jwtAuthMapper.toEntity(requestUserDto);
         JwtResponse jwtToken = authService.login(requestUser);
@@ -59,7 +57,6 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    @ResponseStatus(HttpStatus.CREATED)
     public JwtResponseDto refresh(@RequestBody @Validated JwtRefreshDto refreshDto) {
         JwtRefresh refresh = jwtRefreshMapper.toEntity(refreshDto);
         JwtResponse jwtToken = authService.refresh(refresh);
@@ -67,7 +64,6 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    @ResponseStatus(HttpStatus.CREATED)
     public UserDto create(@RequestBody @Validated UserDto userDto) {
         User user = userMapper.toEntity(userDto);
         user = userService.create(user);
@@ -75,22 +71,32 @@ public class UserController {
         return userDto;
     }
 
+    @PostMapping("/activate")
+    public UserDto activate(@RequestParam String token) {
+        return userMapper.toDto(userService.activate(token));
+    }
+
+    @PostMapping("passwords/reset")
+    public void sendEmailToResetPassword(@RequestBody JwtResetDto resetDto) {
+        authService.sendResetToken(resetMapper.toEntity(resetDto));
+    }
+
+    @GetMapping("/passwords/restore")
+    public void restoreOldPassword(@RequestParam String token) {
+
+    }
+
+    @PostMapping("/passwords/restore")
+    public void restoreOldPassword(@RequestParam String token,
+                                   @RequestBody String password) {
+        authService.resetPassword(token, password);
+    }
+
     @PostMapping("passwords/{userId}")
     public void changePassword(@PathVariable Long userId,
                                @RequestBody PasswordDto passwordDto) {
         Password password = passwordMapper.toEntity(passwordDto);
         userService.updatePassword(password, userId);
-    }
-
-    @PostMapping("passwords/reset")
-    public void forget(@RequestBody JwtResetDto resetDto) {
-        authService.sendResetToken(resetMapper.toEntity(resetDto));
-    }
-
-    @PostMapping("/password/restore")
-    public void restore(@RequestParam String token,
-                        @RequestBody String password) {
-        authService.resetPassword(token, password);
     }
 
     @GetMapping("/events")

@@ -15,4 +15,8 @@ public interface UserService {
 
     User resetPassword(String newPassword, Long id);
 
+    User updateStatus(User user);
+
+    User activate(String token);
+
 }

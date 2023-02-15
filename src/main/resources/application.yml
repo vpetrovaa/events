@@ -15,6 +15,18 @@ spring:
   liquibase:
     change-log: classpath:db.changelog/db.changelog-master.yaml
     default-schema: events_schema
+  mail:
+    username: ${MAIL.USERNAME}
+    password: ${MAIL.PASSWORD}
+    host: ${MAIL.HOST}
+    port: ${MAIL.PORT}
+    protocol: ${MAIL.PROTOCOL}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 jwt:
   properties:
@@ -23,3 +35,8 @@ jwt:
     access: 5
     reset: 2
     activating: 3
+
+email:
+  properties:
+    reset: http://localhost:8080/api/v1/users/passwords/restore?token=
+    activate: http://localhost:8080/api/v1/users/activate?token=
