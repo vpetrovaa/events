@@ -1,6 +1,5 @@
 package com.solvd.laba.events.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.solvd.laba.events.domain.Event;
 import com.solvd.laba.events.domain.Point;
@@ -13,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class EventDto {
@@ -29,7 +29,6 @@ public class EventDto {
     private String description;
 
     @NotNull(message = "Event time is required", groups = {OnCreate.class, OnUpdate.class})
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm")
     private LocalDateTime eventTime;
 
     @NotNull(message = "Price is required", groups = {OnCreate.class, OnUpdate.class})
@@ -56,5 +55,8 @@ public class EventDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Event.Status status;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<String> images;
 
 }

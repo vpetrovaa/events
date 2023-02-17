@@ -1,1 +1,1 @@
-create schema if not exists ${spring.liquibase.default-schema};
+create schema if not exists events_schema;

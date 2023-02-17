@@ -152,19 +152,28 @@ public class EventServiceImpl implements EventService {
         event.setEventTime(newDate);
         eventRepository.save(event);
         Map<String, Object> params = new HashMap<>();
-        event.getTickets().stream()
-                .map(Ticket::getUser)
-                .forEach(u -> emailService.sendRescheduledEventEmail(u, params, event));
+//        event.getTickets().stream()
+//                .map(Ticket::getUser)
+//                .forEach(u -> emailService.sendRescheduledEventEmail(u, params, event)); TODO
         return event;
+    }
+
+    @Override
+    public Event updateImages(Long id, String filename) {
+        Event event = findById(id);
+        Set<String> images = event.getImages();
+        images.add(filename);
+        event.setImages(images);
+        return eventRepository.save(event);
     }
 
     @Override
     public void delete(Long id) {
         Event event = findById(id);
         Map<String, Object> params = new HashMap<>();
-        event.getTickets().stream()
-                .map(Ticket::getUser)
-                .forEach(u -> emailService.sendDeletedEventEmail(u, params, event));
+//        event.getTickets().stream()
+//                .map(Ticket::getUser)
+//                .forEach(u -> emailService.sendDeletedEventEmail(u, params, event)); TODO
         eventRepository.deleteById(id);
     }
 

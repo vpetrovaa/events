@@ -6,10 +6,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @RequiredArgsConstructor
 @Getter
-@ConfigurationProperties(prefix = "email.properties")
+@ConfigurationProperties(prefix = "spring.mail")
 public class EmailProperties {
 
     private final String reset;
     private final String activate;
+    private final String host;
+    private final int port;
+    private final String username;
+    private final String password;
 
 }

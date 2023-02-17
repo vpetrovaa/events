@@ -47,6 +47,14 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ticket> tickets;
 
+    @ElementCollection
+    @CollectionTable(name="events_images", joinColumns = @JoinColumn(
+            name = "event_id",
+            referencedColumnName = "id")
+    )
+    @Column(name="image")
+    private Set<String> images;
+
     public enum Status {
 
         PUBLISHED,

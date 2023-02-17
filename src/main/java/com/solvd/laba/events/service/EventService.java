@@ -12,6 +12,7 @@ public interface EventService {
 
     Event publish(Event event);
 
+
     Event findById(Long id);
 
     List<Event> findAll(int currentPage, EventCriteria criteria);
@@ -19,6 +20,8 @@ public interface EventService {
     List<Event> findByCriteria(EventCriteria criteria);
 
     Event reschedule(Long id, LocalDateTime newDate);
+
+    Event updateImages(Long id, String filename);
 
     void delete(Long id);
 

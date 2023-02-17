@@ -15,7 +15,6 @@ public class UserDto {
     @NotNull(message = "Id is required", groups = {OnUpdate.class})
     private Long id;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private User.Role role;
 
     @NotNull(message = "Password is required", groups = {OnCreate.class})
