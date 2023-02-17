@@ -32,7 +32,6 @@ public class MultipartFileValidator implements ConstraintValidator<ValidFile, Mu
     }
 
     private boolean isValidExtension(MultipartFile file){
-        System.out.println(file.getContentType());
         return extensions.anyMatch(e -> e.contains(Objects.requireNonNull(file.getContentType())));
     }
 
