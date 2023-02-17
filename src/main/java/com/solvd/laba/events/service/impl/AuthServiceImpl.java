@@ -46,21 +46,21 @@ public class AuthServiceImpl implements AuthService {
         String resetToken = jwtService.generateResetToken(user);
         Map<String, Object> params = new HashMap<>();
         params.put("token", resetToken);
-        emailService.sendResetTokenEmail(user, params);
+        //emailService.sendResetTokenEmail(user, params); TODO
     }
 
     @Override
     public void resetPassword(String token, String password) {
-        JwtUser jwtUser = jwtService.extractAllClaims(token);
-        User user = userService.findByEmail(jwtUser.getEmail());
+        String email = jwtService.extractClaim(token, Claims::getSubject);
+        User user = userService.findByEmail(email);
         userService.resetPassword(password, user.getId());
     }
 
     @Override
     public JwtResponse refresh(JwtRefresh refresh) {
         String refreshToken = refresh.getRefreshToken();
-        JwtUser jwtUser = jwtService.extractAllClaims(refreshToken);
-        User user = userService.findByEmail(jwtUser.getEmail());
+        String email = jwtService.extractClaim(refreshToken, Claims::getSubject);
+        User user = userService.findByEmail(email);
         JwtResponse newToken = new JwtResponse();
         String newAccessToken = jwtService.generateAccessToken(user);
         newToken.setAccessToken(newAccessToken);

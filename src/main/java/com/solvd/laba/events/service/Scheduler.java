@@ -20,14 +20,14 @@ public class Scheduler {
     private final EmailService emailService;
     private final TicketService ticketService;
 
-    @Scheduled(cron = "00 12 * * *")
+    @Scheduled(cron = "0 12 0 * * *")
     public void sendTicketInformation() {
         List<Ticket> tickets = ticketService.findAll();
         Map<String, Object> params = new HashMap<>();
-        Set<User> users = tickets.stream()
-                .map(Ticket::getUser)
-                .collect(Collectors.toSet());
-        users.forEach(u -> emailService.sendTicketReminderEmail(u, params, ticketService.findAll(u.getId(), LocalDateTime.now())));
+//        Set<User> users = tickets.stream() TODO
+//                .map(Ticket::getUser)
+//                .collect(Collectors.toSet());
+//        users.forEach(u -> emailService.sendTicketReminderEmail(u, params, ticketService.findAll(u.getId(), LocalDateTime.now())));
     }
 
 }

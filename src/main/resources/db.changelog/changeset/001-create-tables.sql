@@ -30,6 +30,13 @@ create table events(
 	primary key (id)
 );
 
+create table events_images
+(
+    event_id   bigint NOT NULL,
+    image varchar(100) NOT NULL,
+    foreign key (event_id) references events (id) on update cascade on delete cascade
+);
+
 create table tickets (
     id bigserial,
 	user_id bigint not null,

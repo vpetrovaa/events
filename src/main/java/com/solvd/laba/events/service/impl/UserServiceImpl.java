@@ -10,6 +10,7 @@ import com.solvd.laba.events.service.EmailService;
 import com.solvd.laba.events.service.JwtService;
 import com.solvd.laba.events.service.UserService;
 import com.solvd.laba.events.web.security.JwtUser;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -82,8 +83,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User activate(String token) {
-        JwtUser jwtUser = jwtService.extractAllClaims(token);
-        User user = findByEmail(jwtUser.getEmail());
+        String email = jwtService.extractClaim(token, Claims::getSubject);
+        User user = findByEmail(email);
         return updateStatus(user);
     }
 
