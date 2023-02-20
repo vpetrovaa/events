@@ -2,7 +2,7 @@ package com.solvd.laba.events.domain.criteria;
 
 import com.solvd.laba.events.domain.Event;
 import com.solvd.laba.events.domain.Point;
-import lombok.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
