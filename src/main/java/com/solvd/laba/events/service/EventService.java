@@ -12,7 +12,6 @@ public interface EventService {
 
     Event publish(Event event);
 
-
     Event findById(Long id);
 
     List<Event> findAll(int currentPage, EventCriteria criteria);
