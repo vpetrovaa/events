@@ -12,7 +12,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -59,7 +58,6 @@ public class EventServiceImpl implements EventService {
         } else {
             events = eventRepository.findAll();
         }
-        Sort eventTimeSort = Sort.by("eventTime");
         int startItem = currentPage * PAGE_SIZE;
         if (events.size() < startItem) {
             eventsPaged = Collections.emptyList();
@@ -67,9 +65,7 @@ public class EventServiceImpl implements EventService {
             int toIndex = Math.min(startItem + PAGE_SIZE, events.size());
             eventsPaged = events.subList(startItem, toIndex);
         }
-        Pageable paging = PageRequest.of(currentPage, PAGE_SIZE, eventTimeSort);
-        Page<Event> eventPage = new PageImpl<>(eventsPaged, paging, events.size());
-        return eventPage.getContent();
+        return eventsPaged;
     }
 
     @Override
@@ -138,8 +134,11 @@ public class EventServiceImpl implements EventService {
             predicates.add(topicFinalPredicate);
         }
 
+        Order eventTimeOrder = criteriaBuilder.asc(eventRoot.get("eventTime"));
+
         Predicate finalPredicate = criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         criteriaQuery.where(finalPredicate);
+        criteriaQuery.orderBy(eventTimeOrder);
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
@@ -152,9 +151,9 @@ public class EventServiceImpl implements EventService {
         event.setEventTime(newDate);
         eventRepository.save(event);
         Map<String, Object> params = new HashMap<>();
-//        event.getTickets().stream()
-//                .map(Ticket::getUser)
-//                .forEach(u -> emailService.sendRescheduledEventEmail(u, params, event)); TODO
+        event.getTickets().stream()
+                .map(Ticket::getUser)
+                .forEach(u -> emailService.sendRescheduledEventEmail(u, params, event));
         return event;
     }
 
@@ -171,9 +170,9 @@ public class EventServiceImpl implements EventService {
     public void delete(Long id) {
         Event event = findById(id);
         Map<String, Object> params = new HashMap<>();
-//        event.getTickets().stream()
-//                .map(Ticket::getUser)
-//                .forEach(u -> emailService.sendDeletedEventEmail(u, params, event)); TODO
+        event.getTickets().stream()
+                .map(Ticket::getUser)
+                .forEach(u -> emailService.sendDeletedEventEmail(u, params, event));
         eventRepository.deleteById(id);
     }
 

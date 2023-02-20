@@ -38,7 +38,7 @@ public class TicketServiceImpl implements TicketService {
         Root<Ticket> ticketRoot = criteriaQuery.from(Ticket.class);
         List<Predicate> predicates = new ArrayList<>();
 
-        if(userId != null){
+        if (userId != null) {
             Predicate userPredicate = criteriaBuilder.equal(ticketRoot.get("user").<Long>get("id"), userId);
             predicates.add(userPredicate);
         }

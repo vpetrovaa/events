@@ -9,7 +9,6 @@ import com.solvd.laba.events.repository.UserRepository;
 import com.solvd.laba.events.service.EmailService;
 import com.solvd.laba.events.service.JwtService;
 import com.solvd.laba.events.service.UserService;
-import com.solvd.laba.events.web.security.JwtUser;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

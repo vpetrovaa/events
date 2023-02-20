@@ -48,11 +48,11 @@ public class Event {
     private Set<Ticket> tickets;
 
     @ElementCollection
-    @CollectionTable(name="events_images", joinColumns = @JoinColumn(
+    @CollectionTable(name = "events_images", joinColumns = @JoinColumn(
             name = "event_id",
             referencedColumnName = "id")
     )
-    @Column(name="image")
+    @Column(name = "image")
     private Set<String> images;
 
     public enum Status {

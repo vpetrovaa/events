@@ -10,7 +10,6 @@ import com.solvd.laba.events.service.AuthService;
 import com.solvd.laba.events.service.EmailService;
 import com.solvd.laba.events.service.JwtService;
 import com.solvd.laba.events.service.UserService;
-import com.solvd.laba.events.web.security.JwtUser;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
         String resetToken = jwtService.generateResetToken(user);
         Map<String, Object> params = new HashMap<>();
         params.put("token", resetToken);
-        //emailService.sendResetTokenEmail(user, params); TODO
+        emailService.sendResetTokenEmail(user, params);
     }
 
     @Override
