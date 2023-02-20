@@ -9,9 +9,9 @@ import java.util.stream.Stream;
 
 public class MultipartFileValidator implements ConstraintValidator<ValidFile, MultipartFile> {
 
-    private static final long MAX_SIZE = 10000L;
+    private static final long MAX_SIZE = 100000L;
 
-    private static final Stream<String> extensions = Stream.of(".jpg", ".jpeg");
+    private static final Stream<String> extensions = Stream.of("image/jpg", "image/jpeg");
 
     @Override
     public void initialize(ValidFile constraintAnnotation) {
@@ -20,10 +20,7 @@ public class MultipartFileValidator implements ConstraintValidator<ValidFile, Mu
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        if(value == null || !isValidExtension(value) || !isValidSize(value)){
-            return false;
-        }
-        return true;
+        return (value!=null && isValidSize(value) && isValidExtension(value));
     }
 
     private boolean isValidSize(MultipartFile file){
