@@ -6,7 +6,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 public class ResponseDto {
 
     private List<String> errors;

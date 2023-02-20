@@ -1,12 +1,10 @@
 package com.solvd.laba.events.domain;
 
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Embeddable
-@Getter
-@Setter
+@Data
 public class Point {
 
     private Double latitude;
