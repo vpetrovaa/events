@@ -20,18 +20,18 @@ public class MultipartFileValidator implements ConstraintValidator<ValidFile, Mu
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        return (value!=null && isValidSize(value) && isValidExtension(value));
+        return (value != null && isValidSize(value) && isValidExtension(value));
     }
 
-    private boolean isValidSize(MultipartFile file){
+    private boolean isValidSize(MultipartFile file) {
         long currentSize = file.getSize();
-        if(currentSize< MAX_SIZE){
+        if (currentSize < MAX_SIZE) {
             return true;
         }
         return false;
     }
 
-    private boolean isValidExtension(MultipartFile file){
+    private boolean isValidExtension(MultipartFile file) {
         return extensions.anyMatch(e -> e.contains(Objects.requireNonNull(file.getContentType())));
     }
 

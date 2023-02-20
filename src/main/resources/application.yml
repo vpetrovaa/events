@@ -38,7 +38,7 @@ jwt:
 
 minio:
   properties:
-    url: ${MINIO.URL}
-    accessKey: ${MINIO.ACCESS.KEY}
-    secretKey: ${MINIO.SECRET.KEY}
-    bucketName: ${MINIO.BUCKET.NAME}
+    url: ${MINIO_URL}
+    accessKey: ${MINIO_ACCESS_KEY}
+    secretKey: ${MINIO_SECRET_KEY}
+    bucketName: ${MINIO_BUCKET_NAME}

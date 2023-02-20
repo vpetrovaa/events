@@ -3,10 +3,12 @@ package com.solvd.laba.events.service.impl;
 import com.solvd.laba.events.domain.Image;
 import com.solvd.laba.events.service.MinioService;
 import com.solvd.laba.events.service.property.MinioProperties;
-import io.minio.*;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,7 +55,7 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @SneakyThrows
-    public void createImage(Image image){
+    public void createImage(Image image) {
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(minioProperties.getBucketName())
                 .object(image.getFilename())
@@ -62,7 +64,7 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @SneakyThrows
-    public void createThumbnail(InputStream image, String filename){
+    public void createThumbnail(InputStream image, String filename) {
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(minioProperties.getBucketName())
                 .object(filename)
@@ -74,7 +76,7 @@ public class MinioServiceImpl implements MinioService {
     public InputStream generateThumbnail(Image image, int height) {
         BufferedImage currentImage = ImageIO.read(image.getFile().getInputStream());
         int currentHeight = currentImage.getHeight();
-        float ratio = ((1F* height) / (1F * currentHeight));
+        float ratio = ((1F * height) / (1F * currentHeight));
         int newWidth = Math.round(currentImage.getWidth() * ratio);
         BufferedImage newImage = Scalr.resize(currentImage, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, newWidth, height);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
