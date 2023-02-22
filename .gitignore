@@ -4,8 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .env
+mvnw
 mvnw.cmd
-
+.mvn
 
 ### STS ###
 .apt_generated
