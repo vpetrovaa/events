@@ -27,4 +27,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{secrets.DOCKER_USER}}/app:latest
+          tags: ${{secrets.DOCKER_USER}}/events:latest
