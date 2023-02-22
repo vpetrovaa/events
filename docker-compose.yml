@@ -40,7 +40,7 @@ services:
     container_name: events-nginx
     image: nginx:1.23
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx/conf.d/
     depends_on:
       - app
       - minio

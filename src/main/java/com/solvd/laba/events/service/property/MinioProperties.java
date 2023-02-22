@@ -15,6 +15,8 @@ public class MinioProperties {
     private final String accessKey;
     private final String secretKey;
     private final String bucketName;
+    private final Integer extension100 = 100;
+    private final Integer extension400 = 400;
 
     @Bean
     public MinioClient minioClient() {

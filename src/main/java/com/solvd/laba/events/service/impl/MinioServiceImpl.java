@@ -30,12 +30,12 @@ public class MinioServiceImpl implements MinioService {
     @Override
     @SneakyThrows
     public void uploadImage(Long eventId, Image image) {
-        InputStream image100 = generateThumbnail(image, 100);
-        String newImage100Name = image.getFilename().replaceAll(image.getExtension(), "") + "100" + image.getExtension();
+        InputStream image100 = generateThumbnail(image, minioProperties.getExtension100());
+        String newImage100Name = image.getFilename().replaceAll(image.getExtension(), "") + minioProperties.getExtension100() + image.getExtension();
         createThumbnail(image100, newImage100Name);
 
-        InputStream image400 = generateThumbnail(image, 400);
-        String newImage400Name = image.getFilename().replaceAll(image.getExtension(), "") + "400" + image.getExtension();
+        InputStream image400 = generateThumbnail(image, minioProperties.getExtension400());
+        String newImage400Name = image.getFilename().replaceAll(image.getExtension(), "") + minioProperties.getExtension400() + image.getExtension();
         createThumbnail(image400, newImage400Name);
 
         createImage(image);
