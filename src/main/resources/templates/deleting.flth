@@ -1,0 +1,10 @@
+<html lang="en">
+<head>
+    <title>Deleting</title>
+</head>
+<body>
+    <p>Dear <b>${user.name} ${user.surname}</b>.</p>
+    <p>The event ${event.name} was deleted</p>
+    <p>Have a nice day.</p>
+</body>
+</html>
