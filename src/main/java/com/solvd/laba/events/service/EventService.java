@@ -14,9 +14,7 @@ public interface EventService {
 
     Event findById(Long id);
 
-    List<Event> findAll(int currentPage, EventCriteria criteria);
-
-    List<Event> findByCriteria(EventCriteria criteria);
+    List<Event> findAll(EventCriteria criteria, int currentPage);
 
     Event reschedule(Long id, LocalDateTime newDate);
 

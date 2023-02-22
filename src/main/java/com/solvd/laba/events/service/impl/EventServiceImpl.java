@@ -12,8 +12,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,26 +52,26 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findAll(int currentPage, EventCriteria criteria) {
+    public List<Event> findAll(EventCriteria criteria, int currentPage) {
         List<Event> events;
-        List<Event> eventsPaged;
-        if (criteria != null) {
-            events = findByCriteria(criteria);
+        if(criteria !=null){
+            events = findAllByCriteria(criteria, currentPage);
         } else {
-            events = eventRepository.findAll();
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
+            Root<Event> eventRoot = criteriaQuery.from(Event.class);
+            Order eventTimeOrder = criteriaBuilder.asc(eventRoot.get("eventTime"));
+            criteriaQuery.orderBy(eventTimeOrder);
+            Pageable pageable = PageRequest.of(currentPage, PAGE_SIZE);
+            events = entityManager.createQuery(criteriaQuery)
+                    .setFirstResult((int) pageable.getOffset())
+                    .setMaxResults(pageable.getPageSize())
+                    .getResultList();
         }
-        int startItem = currentPage * PAGE_SIZE;
-        if (events.size() < startItem) {
-            eventsPaged = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(startItem + PAGE_SIZE, events.size());
-            eventsPaged = events.subList(startItem, toIndex);
-        }
-        return eventsPaged;
+        return events;
     }
 
-    @Override
-    public List<Event> findByCriteria(EventCriteria criteria) {
+    public List<Event> findAllByCriteria(EventCriteria criteria, int currentPage) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Event> criteriaQuery = criteriaBuilder.createQuery(Event.class);
         Root<Event> eventRoot = criteriaQuery.from(Event.class);
@@ -143,7 +141,13 @@ public class EventServiceImpl implements EventService {
         Predicate finalPredicate = criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         criteriaQuery.where(finalPredicate);
         criteriaQuery.orderBy(eventTimeOrder);
-        return entityManager.createQuery(criteriaQuery).getResultList();
+
+        Pageable pageable = PageRequest.of(currentPage, PAGE_SIZE);
+        List<Event> result = entityManager.createQuery(criteriaQuery)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+        return result;
     }
 
     @Override

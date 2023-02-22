@@ -100,10 +100,10 @@ public class UserController {
     }
 
     @GetMapping("/events")
-    public List<EventDto> findAll(@RequestParam(required = false) Integer currentPage,
-                                  @RequestBody EventCriteriaDto criteriaDto) {
+    public List<EventDto> findAll(@RequestParam Integer currentPage,
+                                  @RequestBody(required = false) EventCriteriaDto criteriaDto) {
         EventCriteria criteria = eventCriteriaMapper.toEntity(criteriaDto);
-        List<Event> events = eventService.findAll(currentPage, criteria);
+        List<Event> events = eventService.findAll(criteria, currentPage);
         return eventMapper.toDto(events);
     }
 
