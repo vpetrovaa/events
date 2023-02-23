@@ -15,10 +15,10 @@ spring:
   liquibase:
     change-log: classpath:db.changelog/db.changelog-master.yaml
   mail:
-    username: ${MAIL.USERNAME}
-    password: ${MAIL.PASSWORD}
-    host: ${MAIL.HOST}
-    port: ${MAIL.PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
     reset: http://localhost:8080/api/v1/users/passwords/restore?token=
     activate: http://localhost:8080/api/v1/users/activate?token=
     properties:
