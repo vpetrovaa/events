@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: events
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: events
+  template:
+    metadata:
+      labels:
+        app: events
+    spec:
+      containers:
+        - name: events
+          image: vpetrovaa/events
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EVENTS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: events-configmap
+                  key: EVENTS_LOG_LEVEL
+            - name: JDBC_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: events-configmap
+                  key: JDBC_LOG_LEVEL
+            - name: PG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: POSTGRES_USER
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: POSTGRES_URL
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: events-secrets
+                  key: MAIL_USERNAME
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: events-secrets
+                  key: MAIL_PASSWORD
+            - name: MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: events-secrets
+                  key: MAIL_HOST
+            - name: MAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: events-secrets
+                  key: MAIL_PORT
