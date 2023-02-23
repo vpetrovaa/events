@@ -7,5 +7,5 @@ spec:
     app: events
   ports:
     - port: 80
-      targetPort: 31111
+      targetPort: 8080
   type: NodePort
