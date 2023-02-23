@@ -2,7 +2,7 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: ${POSTGRES_URL_LOCALHOST}
+    url: ${POSTGRES_URL}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver: ${POSTGRES_DRIVER}
