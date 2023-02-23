@@ -40,9 +40,7 @@ spec:
                   key: MINIO_BUCKET_NAME
           ports:
             - containerPort: 9000
-              name: minio
             - containerPort: 9001
-              name: console
           volumeMounts:
             - name: minio-data
               mountPath: /storage
