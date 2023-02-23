@@ -20,11 +20,11 @@ spec:
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRES_USER
+            - name: POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: pg-secrets
-                  key: POSTGRES_USER
+                  key: POSTGRES_USERNAME
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

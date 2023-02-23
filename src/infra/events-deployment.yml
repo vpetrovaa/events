@@ -29,12 +29,12 @@ spec:
                 configMapKeyRef:
                   name: events-configmap
                   key: JDBC_LOG_LEVEL
-            - name: PG_USERNAME
+            - name: POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: pg-secrets
-                  key: POSTGRES_USER
-            - name: PG_PASSWORD
+                  key: POSTGRES_USERNAME
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: pg-secrets
