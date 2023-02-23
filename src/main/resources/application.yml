@@ -3,7 +3,7 @@ spring:
     import: optional:file:.env[.properties]
   datasource:
     url: ${POSTGRES_URL}
-    username: ${POSTGRES_USER}
+    username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
