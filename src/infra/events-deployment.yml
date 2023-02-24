@@ -39,11 +39,11 @@ spec:
                 secretKeyRef:
                   name: pg-secrets
                   key: POSTGRES_PASSWORD
-            - name: POSTGRES_URL
+            - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
-                  name: pg-secrets
-                  key: POSTGRES_URL
+                  name: pg-configmap
+                  key: POSTGRES_HOST
             - name: MAIL_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -77,7 +77,7 @@ spec:
             - name: MINIO_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: minio-secrets
+                  name: minio-configmap
                   key: MINIO_SECRET_KEY
             - name: MINIO_BUCKET_NAME
               valueFrom:
