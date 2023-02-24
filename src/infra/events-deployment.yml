@@ -76,11 +76,11 @@ spec:
                   key: MINIO_ACCESS_KEY
             - name: MINIO_SECRET_KEY
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: minio-configmap
                   key: MINIO_SECRET_KEY
             - name: MINIO_BUCKET_NAME
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: minio-secrets
                   key: MINIO_BUCKET_NAME
