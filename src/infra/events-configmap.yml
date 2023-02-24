@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: events-configmap
+data:
+  JDBC_LOG_LEVEL: INFO
+  EVENTS_LOG_LEVEL: INFO
