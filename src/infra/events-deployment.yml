@@ -41,7 +41,7 @@ spec:
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_HOST
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: pg-configmap
                   key: POSTGRES_HOST
             - name: MAIL_USERNAME
@@ -76,7 +76,7 @@ spec:
                   key: MINIO_ACCESS_KEY
             - name: MINIO_SECRET_KEY
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: minio-configmap
                   key: MINIO_SECRET_KEY
             - name: MINIO_BUCKET_NAME
